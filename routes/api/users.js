@@ -8,6 +8,7 @@ const passport = require("passport");
 
 // Load Input Validation
 const validateRegisterInput = require("../../validation/register");
+const validateLoginInput = require("../../validation/login");
 
 // Loading User model
 const User = require("../../models/User");
@@ -16,9 +17,8 @@ const User = require("../../models/User");
 // @desc        Register user route
 // @access      Public
 router.post("/register", (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
-
   // Check validation
+  const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
     return res.status(400).json(errors);
   }
@@ -59,13 +59,20 @@ router.post("/register", (req, res) => {
 // @desc        Login user route (returning JWT Token)
 // @access      Public
 router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  // Check validation
+  const { errors, isValid } = validateLoginInput(req.body);
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
+  const { email, password } = req.body;
   // Find user by email
   User.findOne({ email }).then(user => {
     //check for user
-    if (!user) res.status(404).json({ email: "Unregistered Email" });
-
+    if (!user) {
+      errors.email = "Unregistered Email";
+      return res.status(404).json(errors);
+    }
     // check password
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
@@ -86,7 +93,8 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res.status(400).json({ password: "Password Incorrect" });
+        errors.password = "Password Incorrect";
+        return res.status(400).json(errors);
       }
     });
   });
