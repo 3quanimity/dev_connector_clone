@@ -1,3 +1,5 @@
+const validateRegisterInput = require("../validation/register");
+
 module.exports = userController = {
   register: (req, res) => {
     // Check validation
