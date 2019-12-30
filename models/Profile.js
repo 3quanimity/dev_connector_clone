@@ -8,34 +8,14 @@ const ProfileSchema = new Schema({
     type: Schema.Types.ObjectId, // associate user by its ID
     ref: "users"
   },
-  handle: {
-    type: String,
-    required: true,
-    max: 40
-  },
-  company: {
-    type: String
-  },
-  website: {
-    type: String
-  },
-  location: {
-    type: String
-  },
-  status: {
-    type: String,
-    required: true
-  },
-  skills: {
-    type: [String],
-    required: true
-  },
-  bio: {
-    type: String
-  },
-  githubUsername: {
-    type: String
-  },
+  handle: { type: String, required: true, max: 40 },
+  company: { type: String },
+  website: { type: String },
+  location: { type: String },
+  status: { type: String, required: true },
+  skills: { type: [String], required: true },
+  bio: { type: String },
+  githubUsername: { type: String },
   experience: [
     {
       title: { type: String, required: true },
@@ -59,26 +39,13 @@ const ProfileSchema = new Schema({
     }
   ],
   social: {
-    youtube: {
-      type: String
-    },
-    twitter: {
-      type: String
-    },
-    facebook: {
-      type: String
-    },
-    linkedin: {
-      type: String
-    },
-    instagram: {
-      type: String
-    }
+    youtube: { type: String },
+    twitter: { type: String },
+    facebook: { type: String },
+    linkedin: { type: String },
+    instagram: { type: String }
   },
-  date: {
-    type: Date,
-    default: Date.now
-  }
+  date: { type: Date, default: Date.now }
 });
 
 // Model & Export
