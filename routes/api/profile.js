@@ -11,13 +11,6 @@ const Profile = require("../../models/Profile");
 // Load User Model
 const User = require("../../models/User");
 
-// @route       GET api/profile/test
-// @desc        tests profile route
-// @access      Public
-router.get("/test", (req, res) => {
-  res.json({ msg: "Profile Works" });
-});
-
 // @route       GET api/profile
 // @desc        Get current user's profile
 // @access      Private
@@ -28,12 +21,13 @@ router.get(
     const errors = {};
 
     Profile.findOne({ user: req.user.id })
+      .populate("user", ["name", "avatar"])
       .then(Profile => {
         if (!Profile) {
           errors.noProfile = "There's no profile for this user";
           return res.status(404).json(errors);
         }
-        res.json(profile);
+        res.json(Profile);
       })
       .catch(err => res.status(404).json(err));
   }
