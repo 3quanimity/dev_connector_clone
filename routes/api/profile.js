@@ -2,14 +2,13 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 
-// Load Validation
+// Load Validations
 const validateProfileInput = require("../../validation/profile");
 const validateExperienceInput = require("../../validation/experience");
 const validateEducationInput = require("../../validation/education");
 
-// Load Profile Model
+// Load Models
 const Profile = require("../../models/Profile");
-// Load User Model
 const User = require("../../models/User");
 
 // @route       👷GET api/profile
@@ -264,6 +263,22 @@ router.delete(
       profile.save().then(profile=> res.json(profile))
     })
     .catch(err => res.status(404).json(err))
+  }
+);
+
+// @route       👷DELETE api/profile/
+// @desc        📄Delete user & profile
+// @access      🧐Private
+router.delete(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Profile.findOneAndRemove({user: req.user.id})
+    .then(()=>{
+      User.findOneAndRemove({_id: req.user.id})
+      .then(()=> res.json({success: true}))
+
+    })
   }
 );
 
