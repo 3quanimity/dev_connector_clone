@@ -16,6 +16,7 @@ const validateLoginInput = require("../../validation/login");
 // Loading User model
 const User = require("../../models/User");
 
+
 // @route       POST api/users/register
 // @desc        Register user route
 // @access      Public
